@@ -178,11 +178,11 @@ class Block:
             objects.remove(self)
 
 
-Tank('blue', 100, 275, 0,
-     (pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s, pygame.K_SPACE))
-Tank('red', 650, 275, 0,
-     (pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN, pygame.K_KP_ENTER))
 interface = Interface()
+blue_tank = Tank('blue', 100, 275, 0,
+                 (pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s, pygame.K_SPACE))
+red_tank = Tank('red', 650, 275, 0,
+                (pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN, pygame.K_KP_ENTER))
 
 
 def load_level(self, filename='map_lvl.txt'):
@@ -191,6 +191,22 @@ def load_level(self, filename='map_lvl.txt'):
     max_width = max(map(len, level_map))
     # дополняем каждую строку пустыми клетками ('.')
     return list(map(lambda x: x.ljust(max_width, '.'), level_map))
+
+
+def print_winner(blue_tank, red_tank):
+    if blue_tank.hp == 0 or red_tank.hp == 0:
+        window.fill('black')
+        font = pygame.font.Font(None, 50)
+        if blue_tank.hp == 0:
+            text = font.render(f"{red_tank.color} win!", True, f'{red_tank.color}')
+            text_x = WIDTH // 2 - text.get_width() // 2
+            text_y = HEIGHT // 2 - text.get_height() // 2
+            window.blit(text, (text_x, text_y))
+        elif red_tank.hp == 0:
+            text = font.render(f"{blue_tank.color} win!", True, f'{blue_tank.color}')
+            text_x = WIDTH // 2 - text.get_width() // 2
+            text_y = HEIGHT // 2 - text.get_height() // 2
+            window.blit(text, (text_x, text_y))
 
 
 def start_screen():
@@ -228,7 +244,6 @@ for i in range(50):
                 fined = True
         if not fined:
             break
-
     Block(x, y, TILE)
 
 start_screen()
@@ -253,6 +268,7 @@ while play:
         obj.draw()
     interface.draw()
 
+    print_winner(blue_tank, red_tank)
     pygame.display.update()
     clock.tick(FPS)
 
