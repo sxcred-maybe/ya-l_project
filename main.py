@@ -4,6 +4,7 @@ import os
 import sys
 
 pygame.init()
+pygame.display.set_caption('Tanks duel')
 WIDTH, HEIGHT = 800, 600
 FPS, TILE = 60, 32
 window = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -185,7 +186,7 @@ red_tank = Tank('red', 650, 275, 0,
                 (pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN, pygame.K_KP_ENTER))
 
 
-def load_level(self, filename='map_lvl.txt'):
+def load_level(filename='map_lvl.txt'):
     with open(filename, 'r') as mapFile:
         level_map = [line.strip() for line in mapFile]
     max_width = max(map(len, level_map))
